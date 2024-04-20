@@ -32,14 +32,24 @@ const createGame = () => {
   };
 
   const startGame = () => {
-    // while (!winner)
+    // while (!winner
   };
 
-  const evaluateBoard = () => {};
+  const checkWin = (board, activePlayer) => {
+    const combos = [
+      // Rows
+      ...board,
+      // Columns
+      [board[0][0], board[1][0], board[2][0]],
+      [board[0][1], board[1][1], board[2][1]],
+      [board[0][2], board[1][2], board[2][2]],
+      // Diagonals
+      [board[0][0], board[1][1], board[2][2]],
+      [board[0][2], board[1][1], board[2][0]],
+    ];
 
-  const checkRows = (board, activePlayer) => {
-    for (let i = 0; i < board.length; i++) {
-      const activePlayerWon = board[i].every((item) => {
+    for (let i = 0; i < combos.length; i++) {
+      const activePlayerWon = combos[i].every((item) => {
         return item === activePlayer;
       });
 
@@ -49,5 +59,7 @@ const createGame = () => {
     }
     return false;
   };
+
+  const checkColumns = (board, activePlayer) => {};
 };
 // Game loop: Assign active player then active player chooses tile. Board state is updated with tile. Evaluate board state (check for winner). If winner, exit game loop and enter on win flow with active player. If !winner switch active player.
