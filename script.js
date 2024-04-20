@@ -1,4 +1,4 @@
-const BoardState = {
+const TileState = {
   EMPTY: "",
   O: "O",
   X: "X",
@@ -6,18 +6,32 @@ const BoardState = {
 
 function createBoard() {
   const state = [
-    [BoardState.EMPTY, BoardState.EMPTY, BoardState.EMPTY],
-    [BoardState.EMPTY, BoardState.EMPTY, BoardState.EMPTY],
-    [BoardState.EMPTY, BoardState.EMPTY, BoardState.EMPTY],
+    [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
+    [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
+    [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
   ];
 
-  const updateState = (boardState, row, col) => {
-    state[row][col] = boardState;
+  const updateState = (tileState, row, col) => {
+    if (state[row][col] !== TileState.EMPTY) {
+      throw new Error("Tile already picked");
+    }
+
+    state[row][col] = tileState;
     console.log(state);
   };
 
   return { updateState };
 }
 
-const newBoard = createBoard();
-newBoard.updateState(BoardState.X, 1, 1);
+const createGame = () => {
+  let activePlayer = TileState.X;
+  const newBoard = createBoard();
+
+  const toggleActivePlayer = (currentPlayer) => {
+    activePlayer = currentPlayer === TileState.O ? TileState.X : TileState.O;
+  };
+
+  const startGame = () => {};
+
+  // Game loop: Assign active player then active player chooses tile. Board state is updated with tile. Evaluate board state (check for winner). If winner, exit game loop and enter on win flow with active player. If !winner switch active player.
+};
