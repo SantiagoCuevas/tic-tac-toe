@@ -11,5 +11,13 @@ function createBoard() {
     [BoardState.EMPTY, BoardState.EMPTY, BoardState.EMPTY],
   ];
 
-  return { state };
+  const updateState = (boardState, row, col) => {
+    state[row][col] = boardState;
+    console.log(state);
+  };
+
+  return { updateState };
 }
+
+const newBoard = createBoard();
+newBoard.updateState(BoardState.X, 1, 1);
