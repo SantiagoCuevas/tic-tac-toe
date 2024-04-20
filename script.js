@@ -12,40 +12,50 @@ function createBoard() {
   ];
 
   const updateState = (tileState, row, col) => {
-    if (state[row][col] !== TileState.EMPTY) {
+    const askRow = window.prompt("Choose row (0, 1, 2)");
+    const askCol = window.prompt("Choose Column (0, 1, 2)");
+
+    if (state[askRow][askCol] !== TileState.EMPTY) {
       throw new Error("Tile already picked");
     }
 
-    state[row][col] = tileState;
+    state[askRow][askCol] = tileState;
     console.log(state);
   };
 
-  return { updateState };
+  return { updateState, state };
 }
 
 const createGame = () => {
   let activePlayer = TileState.X;
-  const newBoard = createBoard();
+  const board = createBoard();
+  console.log(board.state);
 
   const toggleActivePlayer = (currentPlayer) => {
     activePlayer = currentPlayer === TileState.O ? TileState.X : TileState.O;
   };
 
   const startGame = () => {
-    // while (!winner
+    while (true) {
+      board.updateState(activePlayer);
+
+      if (checkWin()) {
+        endGame();
+        break;
+      }
+
+      toggleActivePlayer(activePlayer);
+    }
   };
 
-  const checkWin = (board, activePlayer) => {
+  const checkWin = () => {
     const combos = [
-      // Rows
-      ...board,
-      // Columns
-      [board[0][0], board[1][0], board[2][0]],
-      [board[0][1], board[1][1], board[2][1]],
-      [board[0][2], board[1][2], board[2][2]],
-      // Diagonals
-      [board[0][0], board[1][1], board[2][2]],
-      [board[0][2], board[1][1], board[2][0]],
+      ...board.state,
+      [(board.state[0][0], board.state[1][0], board.state[2][0])],
+      [board.state[0][1], board.state[1][1], board.state[2][1]],
+      [board.state[0][2], board.state[1][2], board.state[2][2]],
+      [board.state[0][0], board.state[1][1], board.state[2][2]],
+      [board.state[0][2], board.state[1][1], board.state[2][0]],
     ];
 
     for (let i = 0; i < combos.length; i++) {
@@ -60,6 +70,11 @@ const createGame = () => {
     return false;
   };
 
-  const checkColumns = (board, activePlayer) => {};
+  const endGame = () => {
+    console.log("You Win");
+  };
+
+  startGame();
 };
-// Game loop: Assign active player then active player chooses tile. Board state is updated with tile. Evaluate board state (check for winner). If winner, exit game loop and enter on win flow with active player. If !winner switch active player.
+
+const TicTacToe = createGame();
