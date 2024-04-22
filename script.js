@@ -11,8 +11,8 @@ function createBoard() {
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
   ];
 
-  const updateState = (tileState, row, col) => {
-    const askRow = window.prompt("Choose row (0, 1, 2)");
+  const takeTurn = (tileState, row, col) => {
+    const askRow = window.prompt("Choose Row (0, 1, 2)");
     const askCol = window.prompt("Choose Column (0, 1, 2)");
 
     if (state[askRow][askCol] !== TileState.EMPTY) {
@@ -37,7 +37,7 @@ const createGame = () => {
 
   const startGame = () => {
     while (true) {
-      board.updateState(activePlayer);
+      board.takeTurn(activePlayer);
 
       if (checkWin()) {
         endGame();
@@ -77,4 +77,4 @@ const createGame = () => {
   startGame();
 };
 
-const TicTacToe = createGame();
+// const TicTacToe = createGame();
