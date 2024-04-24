@@ -52,11 +52,11 @@ const displayGame = (() => {
 
 const playGame = (() => {
   const takeTurn = (tileState, row, col) => {
+    gameBoard.changeTileState(tileState, row, col);
+
     if (checkWin()) {
       endGame();
     }
-
-    gameBoard.changeTileState(tileState, row, col);
 
     player.toggleActivePlayer();
   };
@@ -64,7 +64,7 @@ const playGame = (() => {
   const checkWin = () => {
     const combos = [
       ...gameBoard.state,
-      [(gameBoard.state[0][0], gameBoard.state[1][0], gameBoard.state[2][0])],
+      [gameBoard.state[0][0], gameBoard.state[1][0], gameBoard.state[2][0]],
       [gameBoard.state[0][1], gameBoard.state[1][1], gameBoard.state[2][1]],
       [gameBoard.state[0][2], gameBoard.state[1][2], gameBoard.state[2][2]],
       [gameBoard.state[0][0], gameBoard.state[1][1], gameBoard.state[2][2]],
@@ -84,7 +84,7 @@ const playGame = (() => {
   };
 
   const endGame = () => {
-    console.log("You Win");
+    console.log(`${player.activePlayer} Wins!`);
   };
 
   return { takeTurn };
