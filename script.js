@@ -3,8 +3,7 @@ const TileState = {
   O: "O",
   X: "X",
 };
-
-function createBoard() {
+const createBoard = (() => {
   const state = [
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
@@ -12,23 +11,32 @@ function createBoard() {
   ];
 
   const takeTurn = (tileState, row, col) => {
-    const askRow = window.prompt("Choose Row (0, 1, 2)");
-    const askCol = window.prompt("Choose Column (0, 1, 2)");
-
-    if (state[askRow][askCol] !== TileState.EMPTY) {
+    if (state[row][col] !== TileState.EMPTY) {
       throw new Error("Tile already picked");
     }
 
-    state[askRow][askCol] = tileState;
+    state[row][col] = tileState;
+
     console.log(state);
   };
 
-  return { updateState, state };
-}
+  return { takeTurn, state };
+})();
 
-const createGame = () => {
+const displayGame = (() => {
+  const tiles = document.querySelectorAll(".tile");
+
+  tiles.forEach((tile) => {
+    tile.addEventListener("click", () => {
+      row = tile.getAttribute("data-row");
+      col = tile.getAttribute("data-col");
+    });
+  });
+})();
+
+const createGame = (() => {
   let activePlayer = TileState.X;
-  const board = createBoard();
+  const board = createBoard;
   console.log(board.state);
 
   const toggleActivePlayer = (currentPlayer) => {
@@ -37,7 +45,7 @@ const createGame = () => {
 
   const startGame = () => {
     while (true) {
-      board.takeTurn(activePlayer);
+      board.takeTurn(activePlayer, row, col);
 
       if (checkWin()) {
         endGame();
@@ -74,7 +82,5 @@ const createGame = () => {
     console.log("You Win");
   };
 
-  startGame();
-};
-
-// const TicTacToe = createGame();
+  return {};
+})();

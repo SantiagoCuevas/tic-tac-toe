@@ -35,4 +35,12 @@ body {
   width: 60vw;
   background-color: #e5e7e8;
   border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.75vw;
+}
+
+.tile {
+  background-color: white;
 }
