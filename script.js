@@ -3,14 +3,26 @@ const TileState = {
   O: "O",
   X: "X",
 };
-const createBoard = (() => {
+
+const player = (() => {
+  let activePlayer = TileState.X;
+
+  const toggleActivePlayer = () => {
+    player.activePlayer =
+      player.activePlayer === TileState.O ? TileState.X : TileState.O;
+  };
+
+  return { activePlayer, toggleActivePlayer };
+})();
+
+const gameBoard = (() => {
   const state = [
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
     [TileState.EMPTY, TileState.EMPTY, TileState.EMPTY],
   ];
 
-  const takeTurn = (tileState, row, col) => {
+  const changeTileState = (tileState, row, col) => {
     if (state[row][col] !== TileState.EMPTY) {
       throw new Error("Tile already picked");
     }
@@ -20,55 +32,48 @@ const createBoard = (() => {
     console.log(state);
   };
 
-  return { takeTurn, state };
+  return { changeTileState, state };
 })();
 
 const displayGame = (() => {
   const tiles = document.querySelectorAll(".tile");
 
   tiles.forEach((tile) => {
-    tile.addEventListener("click", () => {
-      row = tile.getAttribute("data-row");
-      col = tile.getAttribute("data-col");
+    tile.addEventListener("click", (e) => {
+      const row = parseInt(e.target.dataset.row);
+      const col = parseInt(e.target.dataset.col);
+
+      tile.classList.add("selected");
+      tile.innerHTML = `${player.activePlayer}`;
+      playGame.takeTurn(player.activePlayer, row, col);
     });
   });
 })();
 
-const createGame = (() => {
-  let activePlayer = TileState.X;
-  const board = createBoard;
-  console.log(board.state);
-
-  const toggleActivePlayer = (currentPlayer) => {
-    activePlayer = currentPlayer === TileState.O ? TileState.X : TileState.O;
-  };
-
-  const startGame = () => {
-    while (true) {
-      board.takeTurn(activePlayer, row, col);
-
-      if (checkWin()) {
-        endGame();
-        break;
-      }
-
-      toggleActivePlayer(activePlayer);
+const playGame = (() => {
+  const takeTurn = (tileState, row, col) => {
+    if (checkWin()) {
+      endGame();
     }
+
+    gameBoard.changeTileState(tileState, row, col);
+
+    player.toggleActivePlayer();
   };
 
   const checkWin = () => {
     const combos = [
-      ...board.state,
-      [(board.state[0][0], board.state[1][0], board.state[2][0])],
-      [board.state[0][1], board.state[1][1], board.state[2][1]],
-      [board.state[0][2], board.state[1][2], board.state[2][2]],
-      [board.state[0][0], board.state[1][1], board.state[2][2]],
-      [board.state[0][2], board.state[1][1], board.state[2][0]],
+      ...gameBoard.state,
+      [(gameBoard.state[0][0], gameBoard.state[1][0], gameBoard.state[2][0])],
+      [gameBoard.state[0][1], gameBoard.state[1][1], gameBoard.state[2][1]],
+      [gameBoard.state[0][2], gameBoard.state[1][2], gameBoard.state[2][2]],
+      [gameBoard.state[0][0], gameBoard.state[1][1], gameBoard.state[2][2]],
+      [gameBoard.state[0][2], gameBoard.state[1][1], gameBoard.state[2][0]],
     ];
 
     for (let i = 0; i < combos.length; i++) {
       const activePlayerWon = combos[i].every((item) => {
-        return item === activePlayer;
+        return item === player.activePlayer;
       });
 
       if (activePlayerWon) {
@@ -82,5 +87,5 @@ const createGame = (() => {
     console.log("You Win");
   };
 
-  return {};
+  return { takeTurn };
 })();
