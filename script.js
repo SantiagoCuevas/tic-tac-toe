@@ -31,6 +31,21 @@ const gameBoard = (() => {
 
 const displayGame = (() => {
   const tiles = document.querySelectorAll(".tile");
+  const gameTracker = document.querySelector(".turn-tracker");
+
+  const updateGameStatus = () => {
+    if (playGame.checkWin()) {
+      gameTracker.innerHTML = `Player ${player.activePlayer} Wins!`;
+      return;
+    }
+
+    if (playGame.checkDraw()) {
+      gameTracker.innerHTML = "Draw!";
+      return;
+    }
+
+    gameTracker.innerHTML = `Player ${player.activePlayer}'s turn.`;
+  };
 
   tiles.forEach((tile) => {
     tile.addEventListener("click", (e) => {
@@ -40,8 +55,7 @@ const displayGame = (() => {
       if (
         tile.innerHTML === "O" ||
         tile.innerHTML === "X" ||
-        playGame.checkWin() === true ||
-        playGame.round === 9
+        playGame.checkWin()
       ) {
         return;
       }
@@ -49,8 +63,11 @@ const displayGame = (() => {
       tile.classList.add("selected");
       tile.innerHTML = `${player.activePlayer}`;
       playGame.takeTurn(player.activePlayer, row, col);
+      updateGameStatus();
     });
   });
+
+  return { updateGameStatus };
 })();
 
 const playGame = (() => {
@@ -66,7 +83,7 @@ const playGame = (() => {
 
     round++;
 
-    if (round == 9) {
+    if (checkDraw()) {
       draw();
       return;
     }
@@ -96,13 +113,13 @@ const playGame = (() => {
     return false;
   };
 
-  const playerWins = () => {
-    console.log(`${player.activePlayer} Wins!`);
+  const checkDraw = () => {
+    return round === 9;
   };
 
-  const draw = () => {
-    console.log("Draw!");
-  };
+  const playerWins = () => displayGame.updateGameStatus;
 
-  return { takeTurn, checkWin, round };
+  const draw = () => displayGame.updateGameStatus(true);
+
+  return { takeTurn, checkWin, checkDraw };
 })();

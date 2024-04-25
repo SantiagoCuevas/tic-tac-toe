@@ -14,11 +14,18 @@ body {
   height: 100vh;
   width: 20vw;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
   font-size: 10vh;
+  border-bottom: 2px solid #ffffff;
+}
+
+.turn-tracker {
+  font-size: 3vh;
 }
 
 .content {
