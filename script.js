@@ -37,7 +37,12 @@ const displayGame = (() => {
       const row = parseInt(e.target.dataset.row);
       const col = parseInt(e.target.dataset.col);
 
-      if (tile.innerHTML === "O" || tile.innerHTML === "X") {
+      if (
+        tile.innerHTML === "O" ||
+        tile.innerHTML === "X" ||
+        playGame.checkWin() === true ||
+        playGame.round === 9
+      ) {
         return;
       }
 
@@ -99,5 +104,5 @@ const playGame = (() => {
     console.log("Draw!");
   };
 
-  return { takeTurn };
+  return { takeTurn, checkWin, round };
 })();
