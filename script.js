@@ -26,7 +26,15 @@ const gameBoard = (() => {
     state[row][col] = tileState;
   };
 
-  return { changeTileState, state };
+  const resetBoard = () => {
+    for (let i = 0; i < state.length; i++) {
+      for (let j = 0; j < state.length; j++) {
+        state[i][j] = TileState.EMPTY;
+      }
+    }
+  };
+
+  return { changeTileState, state, resetBoard };
 })();
 
 const displayGame = (() => {
@@ -45,6 +53,14 @@ const displayGame = (() => {
     }
 
     gameTracker.innerHTML = `Player ${player.activePlayer}'s turn.`;
+  };
+
+  const resetGameDisplay = () => {
+    const tiles = document.querySelectorAll(".tile");
+
+    tiles.forEach((tile) => {
+      tile.innerHTML = "";
+    });
   };
 
   tiles.forEach((tile) => {
@@ -67,7 +83,7 @@ const displayGame = (() => {
     });
   });
 
-  return { updateGameStatus };
+  return { updateGameStatus, resetGameDisplay };
 })();
 
 const playGame = (() => {
@@ -117,9 +133,18 @@ const playGame = (() => {
     return round === 9;
   };
 
-  const playerWins = () => displayGame.updateGameStatus;
+  const playerWins = () => displayGame.updateGameStatus();
 
   const draw = () => displayGame.updateGameStatus(true);
 
-  return { takeTurn, checkWin, checkDraw };
+  const resetGame = () => {
+    round = 0;
+    player.activePlayer = TileState.X;
+
+    gameBoard.resetBoard();
+    displayGame.resetGameDisplay();
+    displayGame.updateGameStatus();
+  };
+
+  return { takeTurn, checkWin, checkDraw, resetGame };
 })();
