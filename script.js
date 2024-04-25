@@ -23,13 +23,7 @@ const gameBoard = (() => {
   ];
 
   const changeTileState = (tileState, row, col) => {
-    if (state[row][col] !== TileState.EMPTY) {
-      throw new Error("Tile already picked");
-    }
-
     state[row][col] = tileState;
-
-    console.log(state);
   };
 
   return { changeTileState, state };
@@ -42,6 +36,10 @@ const displayGame = (() => {
     tile.addEventListener("click", (e) => {
       const row = parseInt(e.target.dataset.row);
       const col = parseInt(e.target.dataset.col);
+
+      if (tile.innerHTML === "O" || tile.innerHTML === "X") {
+        return;
+      }
 
       tile.classList.add("selected");
       tile.innerHTML = `${player.activePlayer}`;
