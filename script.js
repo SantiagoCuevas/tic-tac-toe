@@ -49,11 +49,21 @@ const displayGame = (() => {
 })();
 
 const playGame = (() => {
+  let round = 0;
+
   const takeTurn = (tileState, row, col) => {
     gameBoard.changeTileState(tileState, row, col);
 
     if (checkWin()) {
-      endGame();
+      playerWins();
+      return;
+    }
+
+    round++;
+
+    if (round == 9) {
+      draw();
+      return;
     }
 
     player.toggleActivePlayer();
@@ -81,8 +91,12 @@ const playGame = (() => {
     return false;
   };
 
-  const endGame = () => {
+  const playerWins = () => {
     console.log(`${player.activePlayer} Wins!`);
+  };
+
+  const draw = () => {
+    console.log("Draw!");
   };
 
   return { takeTurn };
