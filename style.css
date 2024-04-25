@@ -17,6 +17,7 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: 10vh;
 }
 
 .title {
@@ -26,6 +27,15 @@ body {
 
 .turn-tracker {
   font-size: 3vh;
+}
+
+.restart-btn {
+  height: 7vh;
+  width: 15vw;
+  font-size: 3vh;
+  background-color: white;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 .content {

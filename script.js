@@ -34,12 +34,13 @@ const gameBoard = (() => {
     }
   };
 
-  return { changeTileState, state, resetBoard };
+  return { state, changeTileState, resetBoard };
 })();
 
 const displayGame = (() => {
-  const tiles = document.querySelectorAll(".tile");
   const gameTracker = document.querySelector(".turn-tracker");
+  const tiles = document.querySelectorAll(".tile");
+  const restartBtn = document.querySelector(".restart-btn");
 
   const updateGameStatus = () => {
     if (playGame.checkWin()) {
@@ -82,6 +83,8 @@ const displayGame = (() => {
       updateGameStatus();
     });
   });
+
+  restartBtn.addEventListener("click", () => playGame.resetGame());
 
   return { updateGameStatus, resetGameDisplay };
 })();
